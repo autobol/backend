@@ -18,6 +18,6 @@ Building:
     - docker
     - postgres
   script:
-    - gradle build
     - ls
+    - gradle build
     - java -jar \dev-school-app\build\libs\dev-school-app-1.0-SNAPSHOT.jar

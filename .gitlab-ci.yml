@@ -4,12 +4,11 @@ stages:
   - build
 
 before_script:
-  - apk add gradle:6.1
+  - apk add gradle
   - gradle version
 
 Building:
   stage: build
   tags: ["docker"]
   script:
-    - docker build .
 

@@ -1,5 +1,12 @@
+image: alpine:latest
+
 stages:
   - build
+
+before_script:
+  - docker version
+  - docker-compose version
+  - apk add curl xmlstarlet
 
 Building:
   stage: build

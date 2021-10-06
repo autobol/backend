@@ -11,4 +11,4 @@ Building:
   stage: build
   tags: ["docker"]
   script:
-    - gradle version
+    - gradlew build

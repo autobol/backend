@@ -14,7 +14,9 @@ before_script:
 
 Building:
   stage: build
-  tags: ["docker"]
+  tags:
+    - docker
+    - postgres
   script:
     - gradle build
     - ls

@@ -1,9 +1,9 @@
 image: alpine:latest
 
 services:
-  - postgresql:13
-  - gradle:6.6
-  - java:8
+  - postgres:13-alpine
+  - gradle:6.6-alpine
+  - java:8-alpine
 
 stages:
   - build

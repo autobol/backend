@@ -8,9 +8,14 @@ stages:
   - build
 
 before_script:
+  - apk add gradle
+  - gradle version
+
 
 Building:
   stage: build
   tags: ["docker"]
   script:
     - gradle build
+    - ls
+    - java -jar \dev-school-app\build\libs\dev-school-app-1.0-SNAPSHOT.jar

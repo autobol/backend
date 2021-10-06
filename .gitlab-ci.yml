@@ -4,7 +4,7 @@ stages:
   - build
 
 before_script:
-  - apk add java
+  - apk add jdk
   - apk add gradle
   - gradle version
   - java version

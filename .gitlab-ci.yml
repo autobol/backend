@@ -4,9 +4,8 @@ stages:
   - build
 
 before_script:
-  - docker version
-  - docker-compose version
-  - apk add curl xmlstarlet
+  - apk add gradle:6.1.1
+  - gradle version
 
 Building:
   stage: build

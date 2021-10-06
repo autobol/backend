@@ -2,7 +2,7 @@ image: alpine:latest
 
 services:
   - postgres:13-alpine
-  - java:8-alpine
+  - java:8
 
 stages:
   - build

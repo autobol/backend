@@ -1,1 +1,9 @@
+stages:
+  - build
+
+Building:
+  stage: build
+  tags: ["docker"]
+  script:
+    - docker build .
 

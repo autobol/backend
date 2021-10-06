@@ -1,16 +1,17 @@
 image: alpine:latest
 
+services:
+  - postgresql:13
+  - gradle:6.6
+  - java:8
+
 stages:
   - build
 
 before_script:
-  - apk add gradle
-  - java version
-  - gradle version
-
 
 Building:
   stage: build
   tags: ["docker"]
   script:
-    - gradlew build
+    - gradle build

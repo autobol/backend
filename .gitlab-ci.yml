@@ -1,22 +1,22 @@
 image: alpine:latest
 
-services:
-  - postgres:13-alpine
-  - java:8
+#services:
+#  - postgres:13-alpine
+#  - java:8
 
 stages:
   - build
 
 before_script:
   - apk add gradle
-  - gradle version
+  - apk add openjdk11
 
 
 Building:
   stage: build
   tags:
     - docker
-    - postgres
+#    - postgres
   script:
     - ls
     - gradle build

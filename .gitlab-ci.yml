@@ -1,23 +1,12 @@
-image: alpine:latest
-
-#services:
-#  - postgres:13-alpine
-#  - java:8
-
 stages:
   - build
-
-before_script:
-  - apk add gradle
-  - apk add openjdk11
-
 
 Building:
   stage: build
   tags:
     - docker
-#    - postgres
+  services:
+  - docker:19.03.12-dind
+  image: docker
   script:
-    - ls
-    - gradle build
-    - java -jar \dev-school-app\build\libs\dev-school-app-1.0-SNAPSHOT.jar
+    - docker build -t backend

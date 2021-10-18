@@ -8,4 +8,4 @@ FROM alpine:latest AS work
 RUN mkdir /app
 WORKDIR /app
 COPY --from=build /app/dev-school-app/build/libs .
-RUn java -jar dev-school-app-1.0-SNAPSHOT.jar
+RUN java -jar dev-school-app-1.0-SNAPSHOT.jar

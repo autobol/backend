@@ -9,4 +9,4 @@ Building:
   - docker:19.03.12-dind
   image: docker
   script:
-    - docker build -t backend
+    - docker build -t backend .

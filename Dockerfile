@@ -7,5 +7,5 @@ RUN gradle build
 FROM alpine:latest AS work
 RUN mkdir /app
 WORKDIR /app
-COPY --from=build /app/dev-school-app/build/libs .
+COPY --from=build /app .
 RUN java -jar dev-school-app-1.0-SNAPSHOT.jar

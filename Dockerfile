@@ -1,8 +1,8 @@
 FROM alpine:latest AS build
 
-RUN apk --no-cache add openjdk11 && apk --no-cache add gradle && mkdir app/
-WORKDIR app/
-COPY .
+RUN apk --no-cache add openjdk11 && apk --no-cache add gradle && mkdir -p /app
+WORKDIR /app
+COPY . /app
 RUN ["gradle", "build"]
 
 

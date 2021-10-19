@@ -20,5 +20,5 @@ Testing:
     - docker
   image: autobol/course_project:backend
   script:
-    - echo "Hell" 
+    - pwd
 

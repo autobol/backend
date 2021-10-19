@@ -12,6 +12,6 @@ FROM alpine:latest AS work
 
 RUN mkdir /app
 WORKDIR /app
-COPY --from=build app/dev-school-app/build/libs/dev-school-app-1.0-SNAPSHOT.jar app.jar
+COPY --from=build app/build/libs/dev-school-app-1.0-SNAPSHOT.jar app.jar
 RUN apk --no-cache add openjdk11
 ENTRYPOINT ["java", "-jar", "app.jar"]

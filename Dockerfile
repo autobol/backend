@@ -1,6 +1,6 @@
 FROM alpine:latest AS build
 RUN apk --no-cache add openjdk11 && apk --no-cache add gradle
-RUN gradle build
+RUN ["gradle", "build"]
 
 FROM alpine:latest AS work
 RUN mkdir /app

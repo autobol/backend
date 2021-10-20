@@ -25,4 +25,4 @@ spring:
 
 
 base:
-  path: ${BASE_PATH:http://localhost:8080}
+  path: ${BASE_PATH:0.0.0.0:8080}

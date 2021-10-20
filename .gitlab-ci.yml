@@ -10,15 +10,17 @@ Building:
   - docker:19.03.12-dind
   image: docker
   script:
-    - docker build -t autobol/course_project:backend .
-    - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-    - docker push autobol/course_project:backend
+    - apk add --no-cache docker-compose
+    - docker-compose up
+#    - docker build -t autobol/course_project:backend .
+#    - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+#    - docker push autobol/course_project:backend
 
-Testing:
-  stage: test
-  tags:
-    - docker
-  image: autobol/course_project:backend
-  script:
-    - pwd
+#Testing:
+#  stage: test
+#  tags:
+#    - docker
+#  image: autobol/course_project:backend
+#  script:
+#    - pwd
 

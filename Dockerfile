@@ -1,7 +1,7 @@
 FROM alpine:latest AS build
 
 RUN apk --no-cache add openjdk8 &&\
- apk --no-cache add gradle &&\
+ apk --no-cache add gradle=6.6.1 &&\
   mkdir -p /app
 WORKDIR /app
 COPY . /app

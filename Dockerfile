@@ -1,16 +1,19 @@
+ENV GRADLE_VERSION = 6.6.1
+ENV JAVA_VERSION = 8
+
 FROM alpine:latest AS build
 
-RUN apk --no-cache add openjdk8 &&\
+RUN apk --no-cache add openjdk$JAVA_VERSION &&\
  apk --no-cache add gradle &&\
   mkdir -p /app
 WORKDIR /app
 COPY . /app
-RUN gradle wrapper --gradle-version 6.6.1 &&\
+RUN gradle wrapper --gradle-version $GRADLE_VERSION &&\
  chmod +x gradlew
 RUN ["./gradlew", "build"]
 
 
-FROM openjdk:8 AS work
+FROM openjdk:$JAVA_VERSION AS work
 
 RUN mkdir /app
 WORKDIR /app

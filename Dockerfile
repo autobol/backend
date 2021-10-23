@@ -8,7 +8,7 @@ RUN apk --no-cache add openjdk8 &&\
   mkdir -p /app
 WORKDIR /app
 COPY . /app
-RUN gradle wrapper --gradle-version $GRADLE_VERSION &&\
+RUN gradle wrapper --gradle-version ${GRADLE_VERSION} &&\
  chmod +x gradlew
 RUN ["./gradlew", "build"]
 

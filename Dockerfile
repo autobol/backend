@@ -4,8 +4,8 @@ ARG GRADLE_VERSION=6.6.1
 ENV GRADLE_VERSION=$GRADLE_VERSION
 
 RUN apk --no-cache add openjdk8 &&\
- apk --no-cache add gradle-6.6.1 &&\
-  mkdir -p /app
+ apk --no-cache add gradle &&\
+ mkdir -p /app
 WORKDIR /app
 COPY . /app
 RUN gradle wrapper --gradle-version $GRADLE_VERSION &&\

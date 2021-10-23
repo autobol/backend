@@ -2,11 +2,11 @@ FROM alpine:latest AS build
 
 RUN apk --no-cache add openjdk8 &&\
  apk --no-cache add gradle &&\
-  gradle wrapper --gradle-version 6.6.1 &&\
-   chmod +x gradlew &&\
-    mkdir -p /app
+  mkdir -p /app
 WORKDIR /app
 COPY . /app
+RUN gradle wrapper --gradle-version 6.6.1 &&\
+ chmod +x gradlew
 RUN ["./gradlew", "build"]
 
 

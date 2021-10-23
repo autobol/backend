@@ -6,6 +6,7 @@ RUN apk --no-cache add openjdk8 &&\
 WORKDIR /app
 COPY . /app
 # RUN ["gradle", "wrapper", "--gradle-version", "6.6.1"]
+RUN ["ls"]
 RUN ["gradlew.bat", "build"]
 
 

@@ -10,10 +10,9 @@ RUN gradle wrapper --gradle-version 6.6.1 &&\
 RUN ["./gradlew", "build"]
 
 
-FROM alpine:latest AS work
+FROM openjdk:8 AS work
 
-RUN apk --no-cache add openjdk8 &&\
- mkdir /app
+RUN mkdir /app
 WORKDIR /app
 COPY --from=build app/build/libs/*.jar app.jar
 EXPOSE 8080

@@ -1,7 +1,6 @@
 FROM alpine:latest AS build
 
-ARG GRADLE_VERSION=6.6.1
-ENV GRADLE_VERSION=$GRADLE_VERSION
+ENV GRADLE_VERSION=6.6.1
 
 RUN apk --no-cache add openjdk8 &&\
  apk --no-cache add gradle &&\

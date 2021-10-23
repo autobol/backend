@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . /app
 # RUN ["gradle", "wrapper", "--gradle-version", "6.6.1"]
 RUN ["ls"]
-RUN ["./app/gradlew.bat", "build"]
+RUN ["./gradlew.bat", "build"]
 
 
 FROM alpine:latest AS work

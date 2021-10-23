@@ -6,8 +6,8 @@ RUN apk --no-cache add openjdk8 &&\
 WORKDIR /app
 COPY . /app
 RUN chmod +x gradle &&\
- ./gradle wrapper --gradle-version 6.6.1
-RUN chmod +x gradlew
+ chmod +x gradlew
+RUN ["./gradle", "wrapper", "--gradle-version", "6.6.1"]
 RUN ["./gradlew", "build"]
 
 

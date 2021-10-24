@@ -1,0 +1,7 @@
+ARG ALPINE_VERSION
+
+FROM alpine:$ALPINE_VERSION
+
+RUN apk --no-cache add openjdk8 &&\
+ apk --no-cache add gradle &&\
+ mkdir /app

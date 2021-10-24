@@ -1,24 +1,32 @@
 stages:
+  - pre-build
   - build
-  - test
 
-Building:
-  stage: build
+.job_template: &job_config
   tags:
     - docker
   services:
-  - docker:19.03.12-dind
+    - docker:19.03.12-dind
   image: docker
-  script:
-    - docker build -t autobol/course_project:backend .
-    - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-    - docker push autobol/course_project:backend
 
-Testing:
-  stage: test
-  tags:
-    - docker
-  image: autobol/course_project:backend
+Pre-building:
+  stage: pre-build
+  <<: *job_config
   script:
-    - pwd
+    - docker build `
+     `-t $DOCKER_USER/image_for_build_back:latest `
+     `-f ./Dockerfile.pre-build `
+     `--build-arg ALPINE_VERSION=$ALPINE_VERSION .
+    - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+    - docker push $DOCKER_USER/image_for_build_back:latest
+
+Building:
+  stage: build
+  <<: *job_config
+  script:
+    - docker build `
+     `-t $DOCKER_USER/course_project:frontend `
+     `--build-arg GRADLE_VERSION=$GRADLE_VERSION .
+    - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+    - docker push $DOCKER_USER/course_project:frontend
 

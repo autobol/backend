@@ -1,10 +1,9 @@
-FROM alpine:latest AS build
+FROM autobol/image_for_build_back:latest AS build
 
-ENV GRADLE_VERSION=6.6.1
+ARG GRADLE_VERSION
 
-RUN apk --no-cache add openjdk8 &&\
- apk --no-cache add gradle &&\
- mkdir -p /app
+ENV GRADLE_VERSION=$GRADLE_VERSION
+
 WORKDIR /app
 COPY . /app
 RUN gradle wrapper --gradle-version $GRADLE_VERSION &&\

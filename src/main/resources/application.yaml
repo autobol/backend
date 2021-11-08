@@ -9,7 +9,7 @@ spring:
   application:
     name: DevSchool-Application-2
   datasource:
-    url: ${DATASOURCE_URL:jdbc:postgresql://localhost/dev-school}
+    url: ${DATASOURCE_URL:jdbc:postgresql://rvv-db-postgresql.rvv-dev.svc.cluster.local/dev-school}
     driverClassName: org.postgresql.Driver
     username: ${DATASOURCE_USERNAME:postgres}
     password: ${DATASOURCE_PASSWORD:example}

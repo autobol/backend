@@ -29,8 +29,8 @@ Building:
   <<: *job_config
   script:
     - docker build `
-     `-t $DOCKER_USER/course_project:backend `
+     `-t $DOCKER_USER/backend:latest `
      `--build-arg GRADLE_VERSION=$GRADLE_VERSION .
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-    - docker push $DOCKER_USER/course_project:backend
+    - docker push $DOCKER_USER/backend:latest
 

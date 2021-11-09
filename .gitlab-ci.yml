@@ -29,8 +29,8 @@ Building:
   <<: *job_config
   script:
     - docker build `
-     `-t $DOCKER_USER/backend:latest `
+     `-t $DOCKER_REGISTRY/backend:latest `
      `--build-arg GRADLE_VERSION=$GRADLE_VERSION .
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-    - docker push $DOCKER_USER/backend:latest
+    - docker push $DOCKER_REGISTRY/backend:latest
 

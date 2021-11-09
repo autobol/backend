@@ -9,10 +9,10 @@ spring:
   application:
     name: DevSchool-Application-2
   datasource:
-    url: ${DATASOURCE_URL:jdbc:postgresql://rvv-db-postgresql.rvv-dev.svc.cluster.local/dev-school}
+    url: ${DATASOURCE_URL:jdbc:postgresql://dev_db-postgresql.rvv-dev.svc.cluster.local/db_devops_school}
     driverClassName: org.postgresql.Driver
-    username: ${DATASOURCE_USERNAME:postgres}
-    password: ${DATASOURCE_PASSWORD:example}
+    username: ${DATASOURCE_USERNAME:user_dev}
+    password: ${DATASOURCE_PASSWORD:pass_dev}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:

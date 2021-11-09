@@ -49,3 +49,37 @@ Build_dev:
     - aws_dev_deploy
   <<: *build_template
 
+Build_prod:
+  needs:
+    - Deploy_dev
+  environment:
+    name: prod
+    deployment_tier: development
+    url: http://dev-school-app.$NAMESPACE.school.telekom.sh/dev-ops-school/index.html
+  tags:
+    - aws_dev_deploy
+  <<: *build_template
+
+.deploy_teamplate: &deploy_teamplate
+  stage: deploy
+  script:
+    - sed -i "s/NAMESPACE/$NAMESPACE/g" ./app-deploy-chart/values.yaml
+    - sed -i "s/TAG/$TAG/g" ./app-deploy-chart/values.yaml
+    - helm upgrade $APP_CHART app-deploy-chart
+
+Deploy_dev:
+  needs:
+    - Build_dev
+  environment: dev
+  tags:
+    - aws_dev_deploy
+  <<: *deploy_teamplate
+
+Deploy_prod:
+  environment: prod
+  needs:
+    - Build_prod
+  tags:
+    - aws_prod_deploy
+  when: manual
+  <<: *deploy_teamplate

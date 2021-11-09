@@ -2,16 +2,13 @@ stages:
   - pre-build
   - build
 
-.job_template: &job_config
+Pre-build:
+  stage: pre-build
   tags:
     - docker
   services:
     - docker:19.03.12-dind
   image: docker
-
-Pre-building:
-  stage: pre-build
-  <<: *job_config
   script:
     - docker build `
      `-t $DOCKER_USER/image_for_build_back:latest `
@@ -20,17 +17,35 @@ Pre-building:
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
     - docker push $DOCKER_USER/image_for_build_back:latest
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule" || $RUN_REBUILD_IMAGE_FOR_BUILD != "no"'
+    - if: '$RUN_REBUILD_IMAGE_FOR_BUILD != "no"'
       when: always
     - when: never
 
-Building:
+.build_temaplte: &build_template
   stage: build
-  <<: *job_config
+  tags:
+    - docker
+  services:
+    - docker:19.03.12-dind
+  image: docker
   script:
+    - sed -i "s/NAMESPACE/$NAMESPACE/g" ./src/main/resources/application.yaml
+    - sed -i "s/DB_CHART/$DB_CHART/g" ./src/main/resources/application.yaml
+    - sed -i "s/DB_NAME/$DB_NAME/g" ./src/main/resources/application.yaml
+    - sed -i "s/DB_USER/$DB_USER/g" ./src/main/resources/application.yaml
+    - sed -i "s/DB_PASS/$DB_PASS/g" ./src/main/resources/application.yaml
     - docker build `
-     `-t $DOCKER_REGISTRY/backend:latest `
+     `-t $DOCKER_REGISTRY/backend:$TAG `
      `--build-arg GRADLE_VERSION=$GRADLE_VERSION .
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-    - docker push $DOCKER_REGISTRY/backend:latest
+    - docker push $DOCKER_REGISTRY/backend:$TAG
+
+Build_dev:
+  environment:
+    name: dev
+    deployment_tier: development
+    url: http://dev-school-app.$NAMESPACE.school.telekom.sh/dev-ops-school/index.html
+  tags:
+    - aws_dev_deploy
+  <<: *build_template
 

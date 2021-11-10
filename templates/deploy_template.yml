@@ -1,0 +1,6 @@
+.deploy_teamplate: &deploy_teamplate
+  stage: deploy
+  script:
+    - sed -i "s/NAMESPACE/$NAMESPACE/g" ./app-deploy-chart/values.yaml
+    - sed -i "s/TAG/$TAG/g" ./app-deploy-chart/values.yaml
+    - helm upgrade $APP_CHART app-deploy-chart

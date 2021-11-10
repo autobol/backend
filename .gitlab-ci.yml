@@ -51,8 +51,6 @@ Build_dev:
   <<: *build_template
 
 Build_prod:
-  needs:
-    - Deploy_dev
   environment:
     name: prod
     deployment_tier: development

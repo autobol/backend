@@ -4,8 +4,8 @@ stages:
   - deploy
 
 include:
-  - templates/build_template.yml
-  - templates/deploy_template.yml
+  - local: '/templates/build_template.yml'
+  - local: '/templates/deploy_template.yml'
 
 Pre-build:
   stage: pre-build

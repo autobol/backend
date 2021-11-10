@@ -1,26 +1,5 @@
 stages:
-  - pre-build
   - build
-  - deploy
-
-Pre-build:
-  stage: pre-build
-  tags:
-    - docker
-  services:
-    - docker:19.03.12-dind
-  image: docker
-  script:
-    - docker build `
-     `-t $DOCKER_USER/image_for_build_back:latest `
-     `-f ./Dockerfile.pre-build `
-     `--build-arg ALPINE_VERSION=$ALPINE_VERSION .
-    - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-    - docker push $DOCKER_USER/image_for_build_back:latest
-  rules:
-    - if: '$RUN_REBUILD_IMAGE_FOR_BUILD != "no"'
-      when: always
-    - when: never
 
 .build_temaplte: &build_template
   stage: build
@@ -30,16 +9,16 @@ Pre-build:
     - docker:19.03.12-dind
   image: docker
   script:
-    - sed -i "s/NAMESPACE/$NAMESPACE/g" ./src/main/resources/application.yaml
-    - sed -i "s/DB_CHART/$DB_CHART/g" ./src/main/resources/application.yaml
-    - sed -i "s/DB_NAME/$DB_NAME/g" ./src/main/resources/application.yaml
-    - sed -i "s/DB_USER/$DB_USER/g" ./src/main/resources/application.yaml
-    - sed -i "s/DB_PASS/$DB_PASS/g" ./src/main/resources/application.yaml
+    - sed -i "s/NAMESPACE/rvv-test/g" ./src/main/resources/application.yaml
+    - sed -i "s/DB_CHART/db/g" ./src/main/resources/application.yaml
+    - sed -i "s/DB_NAME/bd-test/g" ./src/main/resources/application.yaml
+    - sed -i "s/DB_USER/user/g" ./src/main/resources/application.yaml
+    - sed -i "s/DB_PASS/pass/g" ./src/main/resources/application.yaml
     - docker build `
-     `-t $DOCKER_REGISTRY/backend:$TAG `
+     `-t $DOCKER_REGISTRY/backend:test `
      `--build-arg GRADLE_VERSION=$GRADLE_VERSION .
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-    - docker push $DOCKER_REGISTRY/backend:$TAG
+    - docker push $DOCKER_REGISTRY/backend:test
 
 Build_dev:
   environment:
@@ -50,36 +29,3 @@ Build_dev:
     - aws_dev_deploy
   <<: *build_template
 
-Build_prod:
-  environment:
-    name: prod
-    deployment_tier: development
-    url: http://dev-school-app.$NAMESPACE.school.telekom.sh/dev-ops-school/index.html
-  tags:
-    - aws_dev_deploy
-  <<: *build_template
-
-.deploy_teamplate: &deploy_teamplate
-  stage: deploy
-  script:
-    - sed -i "s/NAMESPACE/$NAMESPACE/g" ./app-deploy-chart/values.yaml
-    - sed -i "s/TAG/$TAG/g" ./app-deploy-chart/values.yaml
-    - helm upgrade $APP_CHART app-deploy-chart
-
-Deploy_dev:
-  needs:
-    - Build_dev
-  environment: dev
-  tags:
-    - aws_dev_deploy
-  <<: *deploy_teamplate
-
-Deploy_prod:
-  needs:
-    - Build_prod
-    - Deploy_dev
-  environment: prod
-  tags:
-    - aws_prod_deploy
-  when: manual
-  <<: *deploy_teamplate

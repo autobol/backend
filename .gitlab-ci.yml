@@ -1,6 +1,7 @@
 stages:
   - pre-build
   - build
+  - deploy
 
 Pre-build:
   stage: pre-build
@@ -76,9 +77,9 @@ Deploy_dev:
   <<: *deploy_teamplate
 
 Deploy_prod:
-  environment: prod
   needs:
     - Build_prod
+  environment: prod
   tags:
     - aws_prod_deploy
   when: manual

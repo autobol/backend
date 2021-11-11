@@ -16,3 +16,21 @@
      `--build-arg GRADLE_VERSION=$GRADLE_VERSION .
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
     - docker push $DOCKER_REGISTRY/backend:$TAG
+
+Build_dev:
+  environment:
+    name: dev
+    deployment_tier: development
+    url: http://dev-school-app.$NAMESPACE.school.telekom.sh/dev-ops-school/index.html
+  tags:
+    - aws_dev_deploy
+  <<: *build_template
+
+Build_prod:
+  environment:
+    name: prod
+    deployment_tier: development
+    url: http://dev-school-app.$NAMESPACE.school.telekom.sh/dev-ops-school/index.html
+  tags:
+    - aws_dev_deploy
+  <<: *build_template

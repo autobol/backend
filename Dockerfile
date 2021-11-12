@@ -8,6 +8,7 @@ WORKDIR /app
 COPY . /app
 RUN gradle wrapper --gradle-version $GRADLE_VERSION &&\
  chmod +x gradlew
+RUN ["./gradlew", "versionDisplay"]
 RUN ["./gradlew", "build"]
 
 

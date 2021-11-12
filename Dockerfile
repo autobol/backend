@@ -10,6 +10,7 @@ RUN gradle wrapper --gradle-version $GRADLE_VERSION &&\
  chmod +x gradlew
 RUN ["./gradlew", "versionDisplay"]
 RUN ["./gradlew", "build"]
+RUN ["./gradlew", "versionDisplay"]
 
 
 FROM openjdk:8 AS work

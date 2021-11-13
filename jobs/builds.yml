@@ -1,8 +1,7 @@
 .build_temaplte: &build_template
   tags: ["docker"]
   services: ["docker:19.03.12-dind"]
-  image: 
-    - docker
+  image: ["docker"]
 
 Pre-build:
   stage: pre-build
@@ -21,9 +20,9 @@ Pre-build:
 
 Build:
   stage: build
-
+  <<: *build_template
   before_script:
-    - apt add git
+    - apt install git
     - project_url=$(echo $CI_PROJECT_URL | sed 's/https:\/\///')
     - git remote set-url origin https://oauth2:$GITLAB_TOKEN@$project_url
   script:

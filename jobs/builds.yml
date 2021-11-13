@@ -21,7 +21,6 @@ Pre-build:
 Build:
   stage: build
   <<: *build_template
-  needs: ["Pre-build"]
   before_script:
     - project_url=$(echo $CI_PROJECT_URL | sed 's/https:\/\///')
     - git remote set-url origin https://oauth2:glpat-AWdMZXgG5_h_mRcr65ij@$project_url

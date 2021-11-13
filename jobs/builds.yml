@@ -35,7 +35,7 @@ Build:
      `--build-arg APP_VERSION=$VERSION_TAG .
     - docker tag `
      `$DOCKER_REGISTRY/backend:latest `
-     `$DOCKER_REGISTRY/backend:$VER_TAG
+     `$DOCKER_REGISTRY/backend:$VERSION_TAG
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-    - docker push $DOCKER_REGISTRY/backend:$VER_TAG
+    - docker push $DOCKER_REGISTRY/backend:$VERSION_TAG
   only: ["master"]

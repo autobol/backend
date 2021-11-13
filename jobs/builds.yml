@@ -1,13 +1,12 @@
 .build_temaplte: &build_template
   tags: ["docker"]
   services: ["docker:19.03.12-dind"]
-  image: ["docker"]
+  image: 
+    -docker
 
 Pre-build:
   stage: pre-build
-  tags: ["docker"]
-  services: ["docker:19.03.12-dind"]
-  image: ["docker"]
+  <<: *build_template
   script:
     - docker build `
      `-t $DOCKER_REGISTRY/image_for_build_back:latest `
@@ -22,7 +21,7 @@ Pre-build:
 
 Build:
   stage: build
-  <<: *build_template
+
   before_script:
     - apt add git
     - project_url=$(echo $CI_PROJECT_URL | sed 's/https:\/\///')

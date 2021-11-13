@@ -1,9 +1,15 @@
 .deploy_teamplate: &deploy_teamplate
   stage: deploy
   script:
-    - sed -i "s/NAMESPACE/$NAMESPACE/g" ./app-deploy-chart/values.yaml
-    - sed -i "s/TAG/$TAG/g" ./app-deploy-chart/values.yaml
-    - helm upgrade $APP_CHART app-deploy-chart
+    - GIT_TAG=$(git describe --tags) && VER_TAG=${GIT_TAG%-*}
+    - sed -i "s/TAG/$VER_TAG/g" ./backend-deploy-chart/values.yaml
+    - sed -i "s/APP_VERSION/$VER_TAG/g ./backend-deploy-chart/Chart.yaml    
+    - sed -i "s/DB_CHART/$DB_CHART/g" ./backend-deploy-chart/values.yaml    
+    - sed -i "s/NAMESPACE/$NAMESPACE/g" ./backend-deploy-chart/values.yaml
+    - sed -i "s/DB_NAME/$DB_NAME/g" ./backend-deploy-chart/values.yaml
+    - sed -i "s/USERNAME/$DB_USER/g" ./backend-deploy-chart/values.yaml  
+    - sed -i "s/PASSWORD/$DB_PASS/g" ./backend-deploy-chart/values.yaml      
+    - helm upgrade $APP_CHART backend-deploy-chart -i
 
 Deploy_dev:
   environment:

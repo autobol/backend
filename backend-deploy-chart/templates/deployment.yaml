@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app }}
+    spec:
+      containers:
+      - name: {{ .Values.deployment.containers.name }}
+        image: {{ .Values.deployment.containers.image }}
+        ports:
+        - containerPort: {{ .Values.deployment.containers.containerPort }}
+        args:
+          - --spring.datasource.url={{ .Values.database.url }}
+          - --spring.datasource.username={{ .Values.database.username }}
+          - --spring.datasource.password={{ .Values.database.password }}

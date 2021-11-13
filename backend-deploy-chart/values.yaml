@@ -1,0 +1,20 @@
+app: backend
+name: backend-deployment
+
+replicaCount: 1
+
+deployment:
+  containers:
+    name: backend-cnt
+    image: autobol/backend:TAG
+    containerPort: 80
+  
+service:
+  protocol: TCP
+  port: 80
+  targetPort: 8080
+
+database:
+  url: jdbc:postgresql://DB_CHART-postgresql.NAMESPACE.svc.cluster.local/DB_NAME
+  username: USERNAME
+  password: PASSWORD

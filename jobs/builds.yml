@@ -2,7 +2,6 @@
   tags: ["docker"]
   services: ["docker:19.03.13-dind"]
   image: docker
-  only: ["master"]
 
 Pre-build:
   stage: pre-build
@@ -15,7 +14,7 @@ Pre-build:
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
     - docker push $DOCKER_REGISTRY/image_for_build_back:latest
   rules:
-    - if: '$RUN_REBUILD_IMAGE_FOR_BUILD != "no"'
+    - if: '$RUN_REBUILD_IMAGE_FOR_BUILD != "no" and $CI_COMMIT_REF_NAME == "master"'
       when: always
     - when: never
 
@@ -37,3 +36,4 @@ Build:
      `--build-arg APP_VERSION=$VERSION_TAG .
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
     - docker push $DOCKER_REGISTRY/backend --all-tags
+  only: ["master"]

@@ -18,4 +18,4 @@ def main(commit, version):
 
 
 if __name__ == '__main__':
-    print main(argv[1], argv[2])
+    print(main(argv[1], argv[2]))

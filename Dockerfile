@@ -19,4 +19,4 @@ RUN mkdir /app
 WORKDIR /app
 COPY --from=build app/build/libs/*.jar app-${APP_VERSION}.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app-$APP_VERSION.jar"]
+ENTRYPOINT ["java", "-jar", "*.jar"]

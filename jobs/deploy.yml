@@ -10,6 +10,7 @@
     - sed -i "s/USERNAME/$DB_USER/g" ./backend-deploy-chart/values.yaml  
     - sed -i "s/PASSWORD/$DB_PASS/g" ./backend-deploy-chart/values.yaml      
     - helm upgrade $APP_CHART backend-deploy-chart -i
+  only: ["master"]
 
 Deploy_dev:
   environment:

@@ -12,11 +12,8 @@ RUN ["./gradlew", "build"]
 
 FROM openjdk:8 AS work
 
-ARG APP_VERSION
-ENV APP_VERSION=$APP_VERSION
-
 RUN mkdir /app
 WORKDIR /app
-COPY --from=build app/build/libs/*.jar app-${APP_VERSION}.jar
+COPY --from=build app/build/libs/*.jar back.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "*.jar"]
+ENTRYPOINT ["java", "-jar", "back.jar"]

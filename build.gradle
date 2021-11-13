@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id "org.hidetake.swagger.generator" version "2.18.2"
     id 'org.springframework.boot' version "2.3.3.RELEASE"
-    id 'net.nemerosa.versioning' version '2.8.2'
 }
 
 group 'ru.tsystems'

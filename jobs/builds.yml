@@ -1,0 +1,37 @@
+.build_temaplte: &build_template
+  stage: build
+  tags: ["docker"]
+  services: ["docker:19.03.12-dind"]
+  image: docker
+
+Pre-build:
+  <<: *build_template
+  script:
+    - docker build `
+     `-t $DOCKER_USER/image_for_build_back:latest `
+     `-f ./Dockerfile.pre-build `
+     `--build-arg ALPINE_VERSION=$ALPINE_VERSION .
+    - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+    - docker push $DOCKER_USER/image_for_build_back:latest
+  rules:
+    - if: '$RUN_REBUILD_IMAGE_FOR_BUILD != "no"'
+      when: always
+    - when: never
+
+Build:
+  <<: *build_template
+  needs: ["Pre-build"]
+  before_script:
+    - project_url=$(echo $CI_PROJECT_URL | sed 's/https:\/\///')
+    - git remote set-url origin https://oauth2:glpat-AWdMZXgG5_h_mRcr65ij@$project_url
+  script:
+    - VERSION_TAG=$(python3 version.py "$CI_COMMIT_MESSAGE" $(git describe --tags))
+    - GIT_TAG=$VERSION_TAG-$CI_COMMIT_SHORT_SHA
+    - git tag $GIT_TAG && git push origin $GIT_TAG
+    - docker build `
+     `-t $DOCKER_REGISTRY/backend:$VER_TAG `
+     `--build-arg GRADLE_VERSION=$GRADLE_VERSION `
+     `--build-arg APP_VERSION=$VERSION_TAG
+    - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+    - docker push $DOCKER_REGISTRY/backend:$VER_TAG
+  only: ["main"]

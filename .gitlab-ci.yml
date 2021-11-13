@@ -1,9 +1,7 @@
 stages:
-  - pre-build
   - build
   - deploy
 
 include:
-  - local: '/jobs/pre-build.yml'
-  - local: '/jobs/build.yml'
+  - local: '/jobs/builds.yml'
   - local: '/jobs/deploy.yml'

@@ -38,5 +38,4 @@ Build:
      `$DOCKER_REGISTRY/backend:$VER_TAG
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
     - docker push $DOCKER_REGISTRY/backend:$VER_TAG
-  only: 
-    - main
+  only: ["master"]

@@ -22,7 +22,7 @@ Build:
   stage: build
   <<: *build_template
   before_script:
-    - apk add git
+    - apk add git && apk add python
     - project_url=$(echo $CI_PROJECT_URL | sed 's/https:\/\///')
     - git remote set-url origin https://oauth2:$GITLAB_TOKEN@$project_url
   script:

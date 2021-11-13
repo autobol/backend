@@ -30,11 +30,10 @@ Build:
     - GIT_TAG=$VERSION_TAG-$CI_COMMIT_SHORT_SHA
     - git tag $GIT_TAG && git push origin $GIT_TAG
     - docker build `
-     `-t $DOCKER_REGISTRY/backend `
+     `-t $DOCKER_REGISTRY/backend:latest `
+     `-t $DOCKER_REGISTRY/backend:$VERSION_TAG `
      `--build-arg GRADLE_VERSION=$GRADLE_VERSION `
      `--build-arg APP_VERSION=$VERSION_TAG .
-    - docker image tag backend $DOCKER_REGISTRY/backend:latest
-    - docker image tag backend $DOCKER_REGISTRY/backend:$VERSION_TAG
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-    - docker push -a $DOCKER_REGISTRY/backend:$VERSION_TAG
+    - docker push $DOCKER_REGISTRY/backend --all-tags
   only: ["master"]

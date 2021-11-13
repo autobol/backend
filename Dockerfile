@@ -17,6 +17,6 @@ ENV APP_VERSION=$APP_VERSION
 
 RUN mkdir /app
 WORKDIR /app
-COPY --from=build app/build/libs/*.jar app-$APP_VERSION.jar
+COPY --from=build app/build/libs/*.jar app-${APP_VERSION}.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app-$APP_VERSION.jar"]

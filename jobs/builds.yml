@@ -1,7 +1,7 @@
 .build_temaplte: &build_template
   tags: ["docker"]
   services: ["docker:19.03.13-dind"]
-  image: ["docker:19.03.13"]
+  image: docker
 
 Pre-build:
   stage: pre-build

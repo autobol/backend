@@ -14,7 +14,7 @@ Pre-build:
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
     - docker push $DOCKER_REGISTRY/image_for_build_back:latest
   rules:
-    - if: '$RUN_REBUILD_IMAGE_FOR_BUILD != "no" and $CI_COMMIT_REF_NAME == "master"'
+    - if: '$RUN_REBUILD_IMAGE_FOR_BUILD != "no" && $CI_COMMIT_REF_NAME == "master"'
       when: always
     - when: never
 

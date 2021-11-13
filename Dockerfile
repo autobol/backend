@@ -1,6 +1,3 @@
-ARG APP_VERSION
-ENV APP_VERSION=$APP_VERSION
-
 FROM autobol/image_for_build_back:latest AS build
 
 ARG GRADLE_VERSION
@@ -16,9 +13,10 @@ RUN ["./gradlew", "build"]
 FROM openjdk:8 AS work
 
 ARG APP_VERSION
+ENV APP_VERSION=$APP_VERSION
 
 RUN mkdir /app
 WORKDIR /app
 COPY --from=build app/build/libs/*.jar app-$APP_VERSION.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app-$APP_VERSION.jar"]

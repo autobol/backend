@@ -33,9 +33,8 @@ Build:
      `-t $DOCKER_REGISTRY/backend `
      `--build-arg GRADLE_VERSION=$GRADLE_VERSION `
      `--build-arg APP_VERSION=$VERSION_TAG .
-    - docker tag `
-     `$DOCKER_REGISTRY/backend:latest `
-     `$DOCKER_REGISTRY/backend:$VERSION_TAG
+    - docker image tag backend $DOCKER_REGISTRY/backend:latest
+    - docker image tag backend $DOCKER_REGISTRY/backend:$VERSION_TAG
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-    - docker push $DOCKER_REGISTRY/backend:$VERSION_TAG
+    - docker push -a $DOCKER_REGISTRY/backend:$VERSION_TAG
   only: ["master"]

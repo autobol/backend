@@ -2,6 +2,7 @@
   tags: ["docker"]
   services: ["docker:19.03.13-dind"]
   image: docker
+  only: ["master"]
 
 Pre-build:
   stage: pre-build
@@ -36,4 +37,3 @@ Build:
      `--build-arg APP_VERSION=$VERSION_TAG .
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
     - docker push $DOCKER_REGISTRY/backend --all-tags
-  only: ["master"]

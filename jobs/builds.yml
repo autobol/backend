@@ -7,7 +7,7 @@ Pre-build:
   stage: pre-build
   tags: ["docker"]
   services: ["docker:19.03.12-dind"]
-  image: ["docker"
+  image: ["docker"]
   script:
     - docker build `
      `-t $DOCKER_REGISTRY/image_for_build_back:latest `

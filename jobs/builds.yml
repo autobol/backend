@@ -32,7 +32,7 @@ Build:
     - docker build `
      `-t $DOCKER_REGISTRY/backend `
      `--build-arg GRADLE_VERSION=$GRADLE_VERSION `
-     `--build-arg APP_VERSION=$VERSION_TAG
+     `--build-arg APP_VERSION=$VERSION_TAG .
     - docker tag `
      `$DOCKER_REGISTRY/backend:latest `
      `$DOCKER_REGISTRY/backend:$VER_TAG

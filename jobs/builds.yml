@@ -1,10 +1,10 @@
 .build_temaplte: &build_template
-  stage: build
   tags: ["docker"]
   services: ["docker:19.03.12-dind"]
   image: docker
 
 Pre-build:
+  stage: pre-build
   <<: *build_template
   script:
     - docker build `
@@ -19,6 +19,7 @@ Pre-build:
     - when: never
 
 Build:
+  stage: build
   <<: *build_template
   needs: ["Pre-build"]
   before_script:

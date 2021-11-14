@@ -1,4 +1,4 @@
-.build_temaplte: &build_template
+.build_template: &build_template
   tags: ["docker"]
   services: ["docker:19.03.13-dind"]
   image: docker

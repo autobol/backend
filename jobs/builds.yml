@@ -36,7 +36,6 @@ Build:
      `--build-arg GRADLE_VERSION=$GRADLE_VERSION .
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
     - docker push $DOCKER_REGISTRY/backend --all-tags
-    - if [$CI_PIPELINE_SOURCE != "schedule"] && [$CI_PIPELINE_SOURCE != "web"]
     - GIT_TAG=$VERSION_TAG-$CI_COMMIT_SHORT_SHA.$CI_PIPELINE_IID 
     - git tag $GIT_TAG && git push origin $GIT_TAG
   only: ["master"]

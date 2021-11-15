@@ -4,7 +4,8 @@
   script:
     - helm rollback $CHART_NAME 0
   when: manual
-
+  only: ["master"]
+    
 Rollback_dev:
   environment: dev
   tags:

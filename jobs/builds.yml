@@ -26,7 +26,11 @@ Build:
     - project_url=$(echo $CI_PROJECT_URL | sed 's/https:\/\///')
     - git remote set-url origin https://oauth2:$GITLAB_TOKEN@$project_url
   script:
-    - VERSION_TAG=$(python3 version.py "$CI_COMMIT_MESSAGE" $(git describe --tags))
+    - >
+      if [$CI_PIPELINE_SOURCE != "schedule" || $CI_PIPELINE_SOURCE != "web"]; then
+        VERSION_TAG=$(python3 version.py "$CI_COMMIT_MESSAGE" $(git describe --tags));
+      else
+        GIT_TAG=$(git describe --tags) && VER_TAG=${GIT_TAG%-*}; fi
     - docker build `
      `-t $DOCKER_REGISTRY/backend:latest `
      `-t $DOCKER_REGISTRY/backend:$VERSION_TAG `
@@ -34,5 +38,8 @@ Build:
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
     - docker push $DOCKER_REGISTRY/backend --all-tags
     - GIT_TAG=$VERSION_TAG-$CI_COMMIT_SHORT_SHA
-    - git tag $GIT_TAG && git push origin $GIT_TAG
+    - >
+      if [$CI_PIPELINE_SOURCE != "schedule"]; then
+        GIT_TAG=$VERSION_TAG-$CI_COMMIT_SHORT_SHA &&
+         git tag $GIT_TAG && git push origin $GIT_TAG; fi
   only: ["master"]

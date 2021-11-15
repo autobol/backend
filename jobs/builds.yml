@@ -42,8 +42,9 @@ Build:
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
     - docker push $DOCKER_REGISTRY/backend --all-tags
     - GIT_TAG=$VERSION_TAG-$CI_COMMIT_SHORT_SHA
-    - >
-      if [$CI_PIPELINE_SOURCE != "schedule"]; then
-        GIT_TAG=$VERSION_TAG-$CI_COMMIT_SHORT_SHA &&
-         git tag $GIT_TAG && git push origin $GIT_TAG; fi
+    - if [$CI_PIPELINE_SOURCE != "schedule"] || [$CI_PIPELINE_SOURCE != "web"];
+      then
+        GIT_TAG=$VERSION_TAG-$CI_COMMIT_SHORT_SHA
+        git tag $GIT_TAG && git push origin $GIT_TAG;
+      fi
   only: ["master"]

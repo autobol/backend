@@ -19,3 +19,5 @@ spec:
         - containerPort: {{ .Values.deployment.containers.containerPort }}
         args:
           - --spring.datasource.url={{ .Values.database.url }}
+          - --spring.datasource.username={{ .Values.database.username }}
+          - --spring.datasource.password={{ .Values.database.password }}

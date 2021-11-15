@@ -7,9 +7,7 @@
     - sed -i "s/APP_VERSION/$VER_TAG/g" ./backend-deploy-chart/Chart.yaml   
     - sed -i "s/DB_CHART/$DB_CHART/g" ./backend-deploy-chart/values.yaml    
     - sed -i "s/NAMESPACE/$NAMESPACE/g" ./backend-deploy-chart/values.yaml
-    - sed -i "s/DB_NAME/$DB_NAME/g" ./backend-deploy-chart/values.yaml
-    - sed -i "s/USERNAME/$DB_USER/g" ./backend-deploy-chart/values.yaml  
-    - sed -i "s/PASSWORD/$DB_PASS/g" ./backend-deploy-chart/values.yaml      
+    - sed -i "s/DB_NAME/$DB_NAME/g" ./backend-deploy-chart/values.yaml     
     - helm upgrade $CHART_NAME backend-deploy-chart -i
   only: ["master"]
 

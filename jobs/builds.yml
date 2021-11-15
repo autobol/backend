@@ -3,6 +3,7 @@
   services: ["docker:19.03.13-dind"]
   image: docker
 
+#Билд образа, в котором будет собираться приложение, ускоряет саму сборку примерно на 20 секунд, src=Dockerfile.pre-build
 Pre-build:
   stage: pre-build
   <<: *build_template
@@ -14,20 +15,22 @@ Pre-build:
     - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
     - docker push $DOCKER_REGISTRY/image_for_build_back:latest
   rules:
+    # Выделил отдельную переменную для контроля запуска джобы
     - if: '$RUN_REBUILD_IMAGE_FOR_BUILD != "no" && $CI_COMMIT_REF_NAME == "master"'
       when: always
     - when: never
 
+#Билд самого приложения
 Build:
   stage: build
   <<: *build_template
   before_script:
-    - apk add git && apk add python3
+    - apk add git && apk add python3 #для версионирования
     - project_url=$(echo $CI_PROJECT_URL | sed 's/https:\/\///')
     - git remote set-url origin https://oauth2:$GITLAB_TOKEN@$project_url
   script:
     - >
-      if [$CI_PIPELINE_SOURCE != "schedule" || $CI_PIPELINE_SOURCE != "web"]; then
+      if [$CI_PIPELINE_SOURCE != "schedule"]; then
         VERSION_TAG=$(python3 version.py "$CI_COMMIT_MESSAGE" $(git describe --tags));
       else
         GIT_TAG=$(git describe --tags) && VER_TAG=${GIT_TAG%-*}; fi

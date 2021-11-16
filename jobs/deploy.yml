@@ -27,8 +27,7 @@ Deploy_prod:
     name: prod
     deployment_tier: production
     url: http://dev-school-app.$NAMESPACE.school.telekom.sh/dev-ops-school/index.html
-  needs:
-    - Deploy_dev
+  needs: ["Deploy_dev"]
   tags:
     - aws_prod_deploy
   when: manual

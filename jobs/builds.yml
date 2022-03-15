@@ -6,7 +6,7 @@
       entrypoint: [""]
     script:
       - mkdir -p /kaniko/.docker
-      - echo "$DOCKER_AUTH_CONFIG" > /kaniko/.docker/config.json
+      - echo "{\"auths\":{\"${DOCKER_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${DOCKER_USER}" "${DOCKER_PASS}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
       - >-
         /kaniko/executor
         --context "${CI_PROJECT_DIR}"

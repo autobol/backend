@@ -5,7 +5,8 @@
       name: gcr.io/kaniko-project/executor:debug
       entrypoint: [""]
     script:
-      - apk add git
+      - apt install git
+      - apt install python
       - VERSION_TAG=$(python3 version.py "$CI_COMMIT_MESSAGE" $(git describe --tags) $CI_COMMIT_SHORT_SHA)
       - mkdir -p /kaniko/.docker
       - echo "{\"auths\":{\"$DOCKER_REGISTR":{\"auth\":\"$(printf "%s:%s" "autobol" "8cba6079-70ca-46a2-99ad-2d68562d1f2e" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json

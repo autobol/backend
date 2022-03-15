@@ -1,41 +1,19 @@
-.build_template: &build_template
-  tags: ["docker"]
-  services: ["docker:19.03.13-dind"]
-  image: docker
 
-#Билд образа, в котором будет собираться приложение, ускоряет саму сборку примерно на 20 секунд, src=Dockerfile.pre-build
-Pre-build:
-  stage: pre-build
-  <<: *build_template
-  script:
-    - docker build `
-     `-t $DOCKER_REGISTRY/image_for_build_back:latest `
-     `-f ./Dockerfile.pre-build `
-     `--build-arg ALPINE_VERSION=$ALPINE_VERSION .
-    - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-    - docker push $DOCKER_REGISTRY/image_for_build_back:latest
-  rules:
-    # Выделил отдельную переменную для контроля запуска джобы
-    - if: '$RUN_REBUILD_IMAGE_FOR_BUILD != "no" && $CI_COMMIT_REF_NAME == "master"'
-      when: always
-    - when: never
-
-#Билд самого приложения
-Build:
-  stage: build
-  <<: *build_template
-  before_script:
-    - apk add git && apk add python3 #для версионирования
-    - project_url=$(echo $CI_PROJECT_URL | sed 's/https:\/\///')
-    - git remote set-url origin https://oauth2:$GITLAB_TOKEN@$project_url
-  script:
-    - VERSION_TAG=$(python3 version.py "$CI_COMMIT_MESSAGE" $(git describe --tags) $CI_COMMIT_SHORT_SHA)
-    - docker build `
-     `-t $DOCKER_REGISTRY/backend:latest `
-     `-t $DOCKER_REGISTRY/backend:$VERSION_TAG `
-     `--build-arg GRADLE_VERSION=$GRADLE_VERSION .
-    - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-    - docker push $DOCKER_REGISTRY/backend --all-tags
-    - GIT_TAG=$VERSION_TAG-$CI_COMMIT_SHORT_SHA.$CI_PIPELINE_IID 
-    - git tag $GIT_TAG && git push origin $GIT_TAG
-  only: ["master"]
+  Build:
+    stage: build
+    image:
+      name: gcr.io/kaniko-project/executor:debug
+      entrypoint: [""]
+    script:
+      - VERSION_TAG=$(python3 version.py "$CI_COMMIT_MESSAGE" $(git describe --tags) $CI_COMMIT_SHORT_SHA)
+      - mkdir -p /kaniko/.docker
+      - echo "{\"auths\":{\"$DOCKER_REGISTR":{\"auth\":\"$(printf "%s:%s" "autobol" "8cba6079-70ca-46a2-99ad-2d68562d1f2e" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+      - >-
+        /kaniko/executor
+        --context "${CI_PROJECT_DIR}"
+        --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+        --destination "$DOCKER_REGISTRY/backend:$VERSION_TAG"
+        --destination $DOCKER_REGISTRY/backend:latest
+      - GIT_TAG=$VERSION_TAG-$CI_COMMIT_SHORT_SHA.$CI_PIPELINE_IID 
+      - git tag $GIT_TAG && git push origin $GIT_TAG
+    only: ["master"]

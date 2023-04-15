@@ -1,5 +1,5 @@
 pipeline {
-    agent {docker {image 'gcr.io/kaniko-project/executor:debug' entrypoint '[""]'}}
+    agent {docker {image 'gcr.io/kaniko-project/executor:latest'}}
 
     environment{
       GRADLE_VERSION = "6.6.1"
